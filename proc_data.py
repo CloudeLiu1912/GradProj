@@ -9,10 +9,10 @@ from sklearn import metrics
 
 def main():
     # 1: Row data
-    all_data = np.load('data/pca_4000x6.npy')
+    all_data = np.load('../data/pca_4000x6.npy')
     print('all.shape', all_data.shape)
     re_all_data = all_data.reshape([4000, 6])
-    row_label = np.load('label.npy')
+    row_label = np.load('../data/label.npy')
 
     # 2: Slide
     blank_ = re_all_data[:100].copy()
@@ -49,7 +49,7 @@ def main():
     # print('trainy2: ', train_y2.shape)
 
     # 5 // SVC - poly
-    svc0 = SVC(kernel='poly', C=0.5, gamma=100)
+    svc0 = SVC(kernel='poly', C=0.5, gamma=0.5)
     # train_x0 = train_x.copy
     # train_y0 = train_y.copy
     # test_x0 = test_x.copy
@@ -64,7 +64,7 @@ def main():
     print("F1-score：", metrics.f1_score(test_y.T[0], pred_y, average='micro'))
 
     # 6 // SVC - rbf
-    svc1 = SVC(kernel='rbf', C=10, gamma=0.1)
+    svc1 = SVC(kernel='rbf', C=10, gamma=5)
     # train_x0 = train_x.copy
     # train_y0 = train_y.copy
     # test_x0 = test_x.copy

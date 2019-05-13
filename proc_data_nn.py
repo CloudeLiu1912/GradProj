@@ -69,7 +69,7 @@ prediction = tf.nn.softmax(out, name="Prediction")
 loss = tf.losses.softmax_cross_entropy(onehot_labels=tfy, logits=out, scope='loss')
 accuracy = tf.metrics.accuracy(          # return (acc, update_op), and create 2 local variables
     labels=tf.argmax(tfy, axis=1), predictions=tf.argmax(out, axis=1),)[1]
-optima = tf.train.AdadeltaOptimizer(learning_rate=0.05)
+optima = tf.train.AdadeltaOptimizer(learning_rate=0.03)
 train_optima = optima.minimize(loss)
 tf.summary.scalar('Loss', loss)
 
@@ -82,7 +82,7 @@ writer = tf.summary.FileWriter("/Users/Epilo/Documents/CodeTest/py_BigData", ses
 plt.ion()
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(8, 4))
 accuracies, steps = [], []
-for t in range(5000):
+for t in range(10000):
     # training
     sess.run(train_optima, feed_dict={tfx: train_x, tfy: train_y})
 
@@ -95,22 +95,22 @@ for t in range(5000):
         print("Step: %i" % t, "| ACC: %.6f" % acc_, "| Loss: %.6f" % (loss_*10000))
 
         # visualize testing
-        # ax1.cla()
-        # for c in range(3):
-        #     bp = ax1.bar(c+0.1, height=sum((np.argmax(pred_, axis=1) == c)),
-        #                  width=0.2, color='red')
-        #     bt = ax1.bar(c-0.1, height=sum((np.argmax(test_y, axis=1) == c)),
-        #                  width=0.2, color='blue')
-        # ax1.set_xticks(range(2), ['success', 'failure'])
-        # ax1.legend(handles=[bp, bt], labels=["prediction", "target"])
-        # ax1.set_ylim((0, 20000))
-        # ax2.cla()
-        # ax2.plot(steps, accuracies, label="accuracy")
-        # ax2.set_ylim(ymax=0.8)
-        # ax2.set_ylabel("accuracy")
-        # plt.pause(0.01)
-#
-# plt.ioff()
-# plt.show()
+        ax1.cla()
+        for c in range(4):
+            bp = ax1.bar(c+0.1, height=sum((np.argmax(pred_, axis=1) == c+1)),
+                         width=0.2, color='red')
+            bt = ax1.bar(c-0.1, height=sum((np.argmax(test_y, axis=1) == c+1)),
+                         width=0.2, color='blue')
+        ax1.set_xticks(range(2), ['success', 'failure'])
+        ax1.legend(handles=[bp, bt], labels=["prediction", "target"])
+        ax1.set_ylim((0, 1000))
+        ax2.cla()
+        ax2.plot(steps, accuracies, label="accuracy")
+        ax2.set_ylim(ymax=1)
+        ax2.set_ylabel("accuracy")
+        plt.pause(0.01)
+
+plt.ioff()
+plt.show()
 
 print(1)

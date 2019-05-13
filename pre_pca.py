@@ -4,7 +4,7 @@ import natsort
 from sklearn.decomposition import PCA
 
 
-files = os.listdir('data/190305new')
+files = os.listdir('../data/190305new')
 file_list = natsort.natsorted(files)
 print('File_list: ', file_list)
 
@@ -23,15 +23,17 @@ print('File_list: ', file_list)
 # print('oriData: ', data)
 
 ep = 4000
-data = np.load('data/afterSTD.npy').reshape([4000, 57210])
+data = np.load('../data/afterSTD.npy').reshape([3600, 57210])
 
 pca = PCA(n_components=0.95)
 newData = pca.fit_transform(data).copy()
 print('newData.shape:', newData.shape)
+print(newData)
 # reData = pca.inverse_transform(newData).copy()
 
 np.set_printoptions(suppress=True)
-np.save('data/pca_4000x6.npy', newData)
+np.save('../data/0_pca_3600x54_95%.npy', newData)
+np.save('../data/0_pca_3600x54_95%_ratio.npy', pca.explained_variance_ratio_)
 # print('newData.shape: ', newData.shape)
 # print('newData: ', newData)
 # print('reData.shape: ', reData.shape)
